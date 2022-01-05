@@ -1,0 +1,30 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events 'started', 'passed', 'skipped', 'failed'
+        exceptionFormat "full"
+        showStandardStreams true
+    }
+}
+
+dependencies {
+    implementation "org.linguafranca.pwdb:KeePassJava2-dom:2.1.4"
+
+    // todo look into this in detail
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    def testing_junit_jupiter_version = "5.7.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:$testing_junit_jupiter_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$testing_junit_jupiter_version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$testing_junit_jupiter_version"
+}
