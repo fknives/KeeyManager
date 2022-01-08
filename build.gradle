@@ -3,6 +3,7 @@ buildscript {
     ext.compose_version = '1.0.5'
     ext.kotlin_version = "1.6.10"
     ext.detekt_version = "1.19.0"
+    ext.ktlint_version = "10.2.1"
     repositories {
         google()
         mavenCentral()
@@ -10,6 +11,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:7.0.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_version"
     }
 }
 
@@ -22,3 +24,4 @@ task clean(type: Delete) {
 }
 
 apply from: 'gradlescripts/detekt.config.gradle'
+apply from: 'gradlescripts/ktlint.gradle'

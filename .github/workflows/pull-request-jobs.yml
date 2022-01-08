@@ -33,3 +33,12 @@ jobs:
           name: Detekt Results
           path: build/reports/detekt.html
           retention-days: 1
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck
+      - name: Upload ktLint Results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: ktLint Results
+          path: ./**/build/reports/ktlint/**/*ktlint*Check.txt
+          retention-days: 1
