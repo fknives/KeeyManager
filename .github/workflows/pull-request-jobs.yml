@@ -42,3 +42,13 @@ jobs:
           name: ktLint Results
           path: ./**/build/reports/ktlint/**/*ktlint*Check.txt
           retention-days: 1
+      - name: Run Lint
+        run: ./gradlew lint
+      - name: Upload Lint Results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Lint Results
+          path: ./**/build/reports/lint-results*.html
+          retention-days: 1
+
