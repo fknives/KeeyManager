@@ -1,0 +1,26 @@
+
+detekt {
+    toolVersion = "$detekt_version"
+
+    def projectPaths = subprojects.collect {
+        def projectName = it.name
+        "$projectDir/$projectName/src/main/java"
+    }
+
+    source = files(*projectPaths)
+    config = files("$projectDir/detekt/detekt.yml")
+    baseline = file("$projectDir/detekt/baseline.xml")
+}
+
+// can't use tasks.withType(Detekt), because Detekt class cannot be imported here only in build.gradle
+// checked, and could find it's task identity, so using string compare instead on that
+tasks.configureEach {
+    if (it.taskIdentity.type.toString() == "class io.gitlab.arturbosch.detekt.Detekt") {
+        it.reports {
+            html.required.set(true)
+            xml.required.set(false)
+            txt.required.set(true)
+            sarif.required.set(false)
+        }
+    }
+}
