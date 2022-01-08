@@ -8,7 +8,6 @@ subprojects { module ->
                 showStandardStreams true
             }
         }
-        def testing_junit_jupiter_version = "5.7.0"
         module.dependencies.testImplementation "org.junit.jupiter:junit-jupiter-engine:$testing_junit_jupiter_version"
         module.dependencies.testImplementation "org.junit.jupiter:junit-jupiter-params:$testing_junit_jupiter_version"
         module.dependencies.testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$testing_junit_jupiter_version"
@@ -33,7 +32,6 @@ subprojects { module ->
                 includeAndroidResources = true
             }
         }
-        def testing_junit_jupiter_version = "5.7.0"
         module.dependencies.testImplementation "org.junit.jupiter:junit-jupiter-engine:$testing_junit_jupiter_version"
         module.dependencies.testImplementation "org.junit.jupiter:junit-jupiter-params:$testing_junit_jupiter_version"
         module.dependencies.testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$testing_junit_jupiter_version"
@@ -58,7 +56,6 @@ subprojects { module ->
                 includeAndroidResources = true
             }
         }
-        def testing_junit_jupiter_version = "5.7.0"
         module.dependencies.testImplementation "org.junit.jupiter:junit-jupiter-engine:$testing_junit_jupiter_version"
         module.dependencies.testImplementation "org.junit.jupiter:junit-jupiter-params:$testing_junit_jupiter_version"
         module.dependencies.testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$testing_junit_jupiter_version"
