@@ -26,3 +26,4 @@ task clean(type: Delete) {
 apply from: 'gradlescripts/detekt.gradle'
 apply from: 'gradlescripts/ktlint.gradle'
 apply from: 'gradlescripts/lint.gradle'
+apply from: 'gradlescripts/testoptions.gradle'

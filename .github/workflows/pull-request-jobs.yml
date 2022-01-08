@@ -52,3 +52,24 @@ jobs:
           path: ./**/build/reports/lint-results*.html
           retention-days: 1
 
+  run-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Run Unit Tests
+        run: ./gradlew unitTest
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Unit Test Results
+          path: ./**/build/reports/tests/**/index.html
+          retention-days: 1
