@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package org.fnives.keepass.android.manager.ui.theme
 
 import androidx.compose.ui.graphics.Color

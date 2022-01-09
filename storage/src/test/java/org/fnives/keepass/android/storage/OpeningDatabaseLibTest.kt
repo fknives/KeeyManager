@@ -1,5 +1,6 @@
 package org.fnives.keepass.android.storage
 
+import java.io.InputStream
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.linguafranca.pwdb.Entry
@@ -9,7 +10,6 @@ import org.linguafranca.pwdb.Group
 import org.linguafranca.pwdb.Visitor
 import org.linguafranca.pwdb.kdbx.KdbxCreds
 import org.linguafranca.pwdb.kdbx.dom.DomDatabaseWrapper
-import java.io.InputStream
 
 class OpeningDatabaseLibTest {
 
@@ -50,7 +50,9 @@ class OpeningDatabaseLibTest {
         }
 
         override fun visit(entry: Entry<*, *, *, *>?) {
-            elements.add("${entry.toString()}(${entry?.getProperty(STANDARD_PROPERTY_NAME_USER_NAME)}, ${entry?.getProperty(STANDARD_PROPERTY_NAME_PASSWORD)})")
+            val userName = entry?.getProperty(STANDARD_PROPERTY_NAME_USER_NAME)
+            val password = entry?.getProperty(STANDARD_PROPERTY_NAME_PASSWORD)
+            elements.add("$entry($userName, $password)")
         }
     }
 }
