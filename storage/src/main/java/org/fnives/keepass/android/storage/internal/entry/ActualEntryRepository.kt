@@ -4,7 +4,7 @@ import org.fnives.keepass.android.storage.model.EntryDetailed
 import org.fnives.keepass.android.storage.model.EntryId
 import org.fnives.keepass.android.storage.model.GroupId
 
-class ActualEntryRepository : EntryRepository {
+internal class ActualEntryRepository : EntryRepository {
     override suspend fun getEntry(entryId: EntryId): EntryDetailed {
         TODO("Not yet implemented")
     }

@@ -4,7 +4,7 @@ import org.fnives.keepass.android.storage.model.Entry
 import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.GroupOrEntry
 
-class ActualSearchEngine : SearchEngine {
+internal class ActualSearchEngine : SearchEngine {
     override suspend fun search(name: String, scope: GroupId?): List<GroupOrEntry> {
         TODO("Not yet implemented")
     }

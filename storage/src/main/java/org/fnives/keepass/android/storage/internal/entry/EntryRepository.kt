@@ -5,7 +5,7 @@ import org.fnives.keepass.android.storage.model.EntryDetailed
 import org.fnives.keepass.android.storage.model.EntryId
 import org.fnives.keepass.android.storage.model.GroupId
 
-interface EntryRepository {
+internal interface EntryRepository {
 
     @Throws(AuthenticationException::class)
     suspend fun getEntry(entryId: EntryId): EntryDetailed

@@ -5,7 +5,7 @@ import org.fnives.keepass.android.storage.model.Entry
 import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.GroupOrEntry
 
-interface SearchEngine {
+internal interface SearchEngine {
 
     @Throws(AuthenticationException::class)
     suspend fun search(name: String, scope: GroupId?): List<GroupOrEntry>

@@ -3,14 +3,16 @@ package org.fnives.keepass.android.storage.internal
 import org.fnives.keepass.android.storage.KeePassRepository
 import org.fnives.keepass.android.storage.internal.authentication.ActualDatabaseAuthenticationEngine
 import org.fnives.keepass.android.storage.internal.authentication.DatabaseAuthenticationEngine
+import org.fnives.keepass.android.storage.internal.database.ActualKPDatabaseHolder
 import org.fnives.keepass.android.storage.internal.entry.ActualEntryRepository
 import org.fnives.keepass.android.storage.internal.entry.EntryRepository
 import org.fnives.keepass.android.storage.internal.group.ActualGroupRepository
 import org.fnives.keepass.android.storage.internal.group.GroupRepository
 import org.fnives.keepass.android.storage.internal.search.ActualSearchEngine
 import org.fnives.keepass.android.storage.internal.search.SearchEngine
+import org.fnives.keepass.android.storage.internal.util.DispatcherHolder
 
-class ActualKeePassRepository(
+internal class ActualKeePassRepository(
     private val groupRepository: GroupRepository,
     private val entryRepository: EntryRepository,
     private val databaseAuthenticationEngine: DatabaseAuthenticationEngine,
@@ -22,11 +24,20 @@ class ActualKeePassRepository(
     SearchEngine by searchEngine {
 
     companion object {
-        fun getInstance() = ActualKeePassRepository(
-            groupRepository = ActualGroupRepository(),
-            entryRepository = ActualEntryRepository(),
-            databaseAuthenticationEngine = ActualDatabaseAuthenticationEngine(),
-            searchEngine = ActualSearchEngine()
-        )
+
+        fun getInstance(
+            dispatcherHolder: DispatcherHolder = DispatcherHolder(),
+            actualKPDatabaseHolder: ActualKPDatabaseHolder = ActualKPDatabaseHolder()
+        ): ActualKeePassRepository {
+            return ActualKeePassRepository(
+                groupRepository = ActualGroupRepository(),
+                entryRepository = ActualEntryRepository(),
+                databaseAuthenticationEngine = ActualDatabaseAuthenticationEngine(
+                    databaseHolder = actualKPDatabaseHolder,
+                    dispatcherHolder = dispatcherHolder
+                ),
+                searchEngine = ActualSearchEngine()
+            )
+        }
     }
 }

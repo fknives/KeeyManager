@@ -5,7 +5,7 @@ import org.fnives.keepass.android.storage.model.Group
 import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.GroupWithEntries
 
-interface GroupRepository {
+internal interface GroupRepository {
 
     @Throws(AuthenticationException::class)
     suspend fun getGroup(groupId: GroupId) : GroupWithEntries

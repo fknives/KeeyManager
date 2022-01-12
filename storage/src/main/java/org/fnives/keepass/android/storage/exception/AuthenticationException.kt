@@ -1,3 +1,6 @@
 package org.fnives.keepass.android.storage.exception
 
-class AuthenticationException() : RuntimeException()
+class AuthenticationException(
+    message: String? = null,
+    cause: Throwable? = null
+) : RuntimeException(message, cause)
