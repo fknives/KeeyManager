@@ -2,6 +2,9 @@ package org.fnives.keepass.android.storage.model
 
 import java.util.UUID
 
+/**
+ * Unify id of an Entry
+ */
 @JvmInline
 value class EntryId(val uuid: UUID) {
 
