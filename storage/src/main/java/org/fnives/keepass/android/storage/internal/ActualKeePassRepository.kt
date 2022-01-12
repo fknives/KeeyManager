@@ -3,7 +3,7 @@ package org.fnives.keepass.android.storage.internal
 import org.fnives.keepass.android.storage.KeePassRepository
 import org.fnives.keepass.android.storage.internal.authentication.ActualDatabaseAuthenticationEngine
 import org.fnives.keepass.android.storage.internal.authentication.DatabaseAuthenticationEngine
-import org.fnives.keepass.android.storage.internal.database.ActualKPDatabaseHolder
+import org.fnives.keepass.android.storage.internal.database.ActualDatabaseHolder
 import org.fnives.keepass.android.storage.internal.entry.ActualEntryRepository
 import org.fnives.keepass.android.storage.internal.entry.EntryRepository
 import org.fnives.keepass.android.storage.internal.group.ActualGroupRepository
@@ -27,11 +27,15 @@ internal class ActualKeePassRepository(
 
         fun getInstance(
             dispatcherHolder: DispatcherHolder = DispatcherHolder(),
-            actualKPDatabaseHolder: ActualKPDatabaseHolder = ActualKPDatabaseHolder()
+            actualKPDatabaseHolder: ActualDatabaseHolder = ActualDatabaseHolder()
         ): ActualKeePassRepository {
             return ActualKeePassRepository(
-                groupRepository = ActualGroupRepository(),
-                entryRepository = ActualEntryRepository(),
+                groupRepository = ActualGroupRepository(
+                    databaseHolder = actualKPDatabaseHolder
+                ),
+                entryRepository = ActualEntryRepository(
+                    databaseHolder = actualKPDatabaseHolder
+                ),
                 databaseAuthenticationEngine = ActualDatabaseAuthenticationEngine(
                     databaseHolder = actualKPDatabaseHolder,
                     dispatcherHolder = dispatcherHolder

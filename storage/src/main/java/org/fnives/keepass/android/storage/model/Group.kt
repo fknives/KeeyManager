@@ -5,9 +5,8 @@ import java.util.Date
 /**
  * Basic representation of an Group, intended to show the user for selection
  */
-class Group(
-    val id: GroupId,
-    val lastModified: Date,
+data class Group(
+    val id: GroupId = GroupId.ROOT_ID,
     val groupName: String,
     val icon: KIcon
 ) : GroupOrEntry()

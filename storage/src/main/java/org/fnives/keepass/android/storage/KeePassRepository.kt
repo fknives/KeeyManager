@@ -1,5 +1,6 @@
 package org.fnives.keepass.android.storage
 
+import org.fnives.keepass.android.storage.KeePassRepository.Companion.getInstance
 import org.fnives.keepass.android.storage.exception.AuthenticationException
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
 import org.fnives.keepass.android.storage.model.Credentials
@@ -32,41 +33,38 @@ interface KeePassRepository {
 
     /**
      * Returns the Group with it's basic Entry models to show to the user.
+     *
+     * For root group refer [GroupId.ROOT_ID]
      */
     @Throws(AuthenticationException::class)
-    suspend fun getGroup(groupId: GroupId) : GroupWithEntries
+    suspend fun getGroup(groupId: GroupId): GroupWithEntries?
 
     /**
-     * Creates a new group in the database
-     *
-     * if you want to generate an id, use [GroupId.GENERATE_ID] in the model.
+     * Creates a new group in the database, given [GroupId] is ignored
      */
     @Throws(AuthenticationException::class)
-    suspend fun addGroup(group: Group)
+    suspend fun addGroup(group: Group, parentId: GroupId): GroupId
 
-    @Throws(AuthenticationException::class)
-    suspend fun editGroup(groupId: GroupId, group: Group)
+    @Throws(AuthenticationException::class, IllegalArgumentException::class)
+    suspend fun editGroup(group: Group)
 
-    @Throws(AuthenticationException::class)
+    @Throws(AuthenticationException::class, IllegalArgumentException::class)
     suspend fun deleteGroup(groupId: GroupId)
 
     /**
      * Returns the detailed Entry Model with all it's modifiable fields
      */
     @Throws(AuthenticationException::class)
-    suspend fun getEntry(entryId: EntryId): EntryDetailed
+    suspend fun getEntry(entryId: EntryId): EntryDetailed?
 
     /**
-     * Creates a new entry in the database
-     *
-     * if you want to generate an id, use [EntryId.GENERATE_ID] in the model.
+     * Creates a new entry in the database, given [EntryId] and [EntryDetailed.lastModified] is ignored
      */
+    @Throws(AuthenticationException::class)
+    suspend fun addEntry(entry: EntryDetailed, parentId: GroupId): EntryId
 
     @Throws(AuthenticationException::class)
-    suspend fun addEntry(entry: EntryDetailed, groupId: GroupId)
-
-    @Throws(AuthenticationException::class)
-    suspend fun editEntry(entryId: EntryId, entry: EntryDetailed)
+    suspend fun editEntry(entry: EntryDetailed)
 
     @Throws(AuthenticationException::class)
     suspend fun deleteEntry(entryId: EntryId)

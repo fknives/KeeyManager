@@ -3,4 +3,8 @@ package org.fnives.keepass.android.storage.model
 /**
  * Icon associated with [GroupOrEntry]
  */
-class KIcon
+enum class KIcon {
+    TEST,
+    OTHER()
+    // todo add icon enums
+}

@@ -8,13 +8,13 @@ import org.fnives.keepass.android.storage.model.GroupId
 internal interface EntryRepository {
 
     @Throws(AuthenticationException::class)
-    suspend fun getEntry(entryId: EntryId): EntryDetailed
+    suspend fun getEntry(entryId: EntryId): EntryDetailed?
 
     @Throws(AuthenticationException::class)
-    suspend fun addEntry(entry: EntryDetailed, groupId: GroupId)
+    suspend fun addEntry(entry: EntryDetailed, parentId: GroupId): EntryId
 
     @Throws(AuthenticationException::class)
-    suspend fun editEntry(entryId: EntryId, entry: EntryDetailed)
+    suspend fun editEntry(entry: EntryDetailed)
 
     @Throws(AuthenticationException::class)
     suspend fun deleteEntry(entryId: EntryId)

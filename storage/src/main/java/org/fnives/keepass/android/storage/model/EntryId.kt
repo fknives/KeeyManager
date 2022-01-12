@@ -9,6 +9,6 @@ import java.util.UUID
 value class EntryId(val uuid: UUID) {
 
     companion object {
-        val GENERATE_ID = EntryId(UUID(0,0))
+        internal val GENERATE_ID = EntryId(UUID(0,0))
     }
 }

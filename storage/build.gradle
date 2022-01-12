@@ -7,13 +7,10 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
-
-test {
-    useJUnitPlatform()
-    testLogging {
-        events 'started', 'passed', 'skipped', 'failed'
-        exceptionFormat "full"
-        showStandardStreams true
+sourceSets {
+    test {
+        java.srcDirs += "src/integrationTest/java"
+        resources.srcDirs += "src/integrationTest/resources"
     }
 }
 

@@ -1,13 +1,13 @@
 package org.fnives.keepass.android.storage.internal.authentication
 
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
-import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.fnives.keepass.android.storage.exception.AuthenticationException
-import org.fnives.keepass.android.storage.internal.database.ActualKPDatabaseHolder
+import org.fnives.keepass.android.storage.internal.database.ActualDatabaseHolder
 import org.fnives.keepass.android.storage.model.Credentials
 import org.fnives.keepass.android.storage.testutil.TestDispatcherHolder
 import org.fnives.keepass.android.storage.testutil.resourceAsStream
@@ -22,11 +22,12 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.verifyZeroInteractions
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class ActualDatabaseAuthenticationEngineTest {
 
     private lateinit var sut: ActualDatabaseAuthenticationEngine
     private lateinit var testDispatcherHolder: TestDispatcherHolder
-    private lateinit var mockDatabaseHolder: ActualKPDatabaseHolder
+    private lateinit var mockDatabaseHolder: ActualDatabaseHolder
 
     @BeforeEach
     fun setUp() {
@@ -51,7 +52,12 @@ internal class ActualDatabaseAuthenticationEngineTest {
         val password = "test1"
 
         testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseInputStream = inputStream, password = password))
+        val credentials = Credentials(
+            databaseInputStream = inputStream,
+            password = password,
+            databaseOutputStreamFactory = { ByteArrayOutputStream() }
+        )
+        sut.authenticate(credentials)
 
         verify(mockDatabaseHolder, times(1))._database = any()
         verifyNoMoreInteractions(mockDatabaseHolder)
@@ -63,11 +69,17 @@ internal class ActualDatabaseAuthenticationEngineTest {
         val inputStream: InputStream = resourceAsStream("test1.kdbx")
         val password = "test1"
         testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseInputStream = inputStream, password = password))
+        val credentials = Credentials(
+            databaseInputStream = inputStream,
+            password = password,
+            databaseOutputStreamFactory = { ByteArrayOutputStream() }
+        )
+        sut.authenticate(credentials)
         verify(mockDatabaseHolder, times(1))._database = any()
 
         sut.disconnect()
 
+        verify(mockDatabaseHolder, times(1))._database
         verify(mockDatabaseHolder, times(1))._database = null
         verifyNoMoreInteractions(mockDatabaseHolder)
     }
@@ -81,7 +93,12 @@ internal class ActualDatabaseAuthenticationEngineTest {
         Assertions.assertThrows(AuthenticationException::class.java) {
             runBlocking {
                 testDispatcherHolder.single.resumeDispatcher()
-                sut.authenticate(Credentials(databaseInputStream = inputStream, password = password))
+                val credentials = Credentials(
+                    databaseInputStream = inputStream,
+                    password = password,
+                    databaseOutputStreamFactory = { ByteArrayOutputStream() }
+                )
+                sut.authenticate(credentials)
             }
         }
     }
@@ -94,7 +111,12 @@ internal class ActualDatabaseAuthenticationEngineTest {
         val dispatcher = TestCoroutineDispatcher()
 
         async(dispatcher) {
-            sut.authenticate(Credentials(databaseInputStream = inputStream, password = password))
+            val credentials = Credentials(
+                databaseInputStream = inputStream,
+                password = password,
+                databaseOutputStreamFactory = { ByteArrayOutputStream() }
+            )
+            sut.authenticate(credentials)
         }
         dispatcher.advanceUntilIdle()
 
@@ -116,6 +138,7 @@ internal class ActualDatabaseAuthenticationEngineTest {
 
         verifyZeroInteractions(mockDatabaseHolder)
         testDispatcherHolder.single.runCurrent()
+        verify(mockDatabaseHolder, times(1))._database
         verify(mockDatabaseHolder, times(1))._database = null
         verifyNoMoreInteractions(mockDatabaseHolder)
     }
