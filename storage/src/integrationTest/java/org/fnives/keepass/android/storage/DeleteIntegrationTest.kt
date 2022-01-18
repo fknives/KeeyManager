@@ -51,18 +51,19 @@ class DeleteIntegrationTest {
         val expectedRootGroup = Group(
             id = GroupId.ROOT_ID,
             groupName = "Root",
-            icon = KIcon.OTHER
+            icon = KIcon.Folder
         )
         val expectedGroup = Group(
             id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID,
             groupName = "cica",
-            icon = KIcon.OTHER
+            icon = KIcon.Key
         )
         val expectedRootGroupWithEntries = GroupWithEntries(group = expectedRootGroup, entries = listOf(expectedGroup))
         val expectedEntry = Entry(
             id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID,
             entryName = "my-special-entry",
-            userName = "my"
+            userName = "my",
+            icon = KIcon.Warning
         )
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf(expectedEntry))
         val expectedEntryDetail = EntryDetailed(
@@ -73,7 +74,7 @@ class DeleteIntegrationTest {
             url = "entry",
             notes = "uh",
             lastModified = Date(1642018057000),
-            icon = KIcon.OTHER
+            icon = KIcon.Warning
         )
 
         val actualRootGroupWithEntries = sut.getGroup(GroupId.ROOT_ID)
@@ -94,7 +95,7 @@ class DeleteIntegrationTest {
         val expectedGroup = Group(
             id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID,
             groupName = "cica",
-            icon = KIcon.OTHER
+            icon = KIcon.Key
         )
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf())
 
@@ -116,7 +117,7 @@ class DeleteIntegrationTest {
         val expectedRootGroup = Group(
             id = GroupId.ROOT_ID,
             groupName = "Root",
-            icon = KIcon.OTHER
+            icon = KIcon.Folder
         )
         val expectedRootGroupWithEntries = GroupWithEntries(expectedRootGroup, listOf())
         val entryId = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID
@@ -141,7 +142,7 @@ class DeleteIntegrationTest {
         val expectedRootGroup = Group(
             id = GroupId.ROOT_ID,
             groupName = "Root",
-            icon = KIcon.OTHER
+            icon = KIcon.Folder
         )
         val expectedRootGroupWithEntries = GroupWithEntries(expectedRootGroup, listOf())
         val entryId = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID

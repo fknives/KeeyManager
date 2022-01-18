@@ -51,7 +51,7 @@ class WritingIntegrationTest {
             password = "special",
             url = "entry",
             notes = "uh",
-            icon = KIcon.OTHER,
+            icon = KIcon.Apple,
         )
         val entryId = sut.addEntry(entryDetail, GroupId.ROOT_ID)
 
@@ -65,7 +65,8 @@ class WritingIntegrationTest {
         val expectedEntry = Entry(
             id = entryId,
             entryName = entryDetail.entryName,
-            userName = "my"
+            userName = "my",
+            icon = KIcon.Apple
         )
         Assertions.assertEquals(expectedEntryDetailed, foundEntry)
         Assertions.assertEquals(expectedEntry, foundInGroup)
@@ -76,9 +77,9 @@ class WritingIntegrationTest {
     fun writingGroupKeepsTheData() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
         sut.authenticate(Credentials(databaseFile, "test1"))
-        val group = Group(groupName = "cica", icon = KIcon.OTHER)
+        val group = Group(groupName = "cica", icon = KIcon.FolderOpen)
         val groupId = sut.addGroup(group, GroupId.ROOT_ID)
-        val subGroup = Group(groupName = "cica2", icon = KIcon.OTHER)
+        val subGroup = Group(groupName = "cica2", icon = KIcon.BlackBerry)
         val subGroupId = sut.addGroup(subGroup, groupId)
         val expectedGroup = group.copy(id = groupId)
         val expectedSubGroup = subGroup.copy(id = subGroupId)
@@ -101,19 +102,18 @@ class WritingIntegrationTest {
     fun writingEntryIntoGroupKeepsTheData() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
         sut.authenticate(Credentials(databaseFile, "test1"))
-        val group = Group(groupName = "cica", icon = KIcon.OTHER)
+        val group = Group(groupName = "cica", icon = KIcon.Archive)
         val entryDetail = EntryDetailed(
             entryName = "my-special-entry",
             userName = "my",
             password = "special",
             url = "entry",
-            notes = "uh",
-            icon = KIcon.OTHER,
+            notes = "uh"
         )
         val groupId = sut.addGroup(group, GroupId.ROOT_ID)
         val entryId = sut.addEntry(entryDetail, groupId)
 
-        val expectedEntry = Entry(id = entryId, entryName = entryDetail.entryName, userName = "my")
+        val expectedEntry = Entry(id = entryId, entryName = entryDetail.entryName, userName = "my", icon = KIcon.Key)
         val expectedGroup = group.copy(id = groupId)
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf(expectedEntry))
 
@@ -138,7 +138,7 @@ class WritingIntegrationTest {
     fun writingIsPermanent() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
         sut.authenticate(Credentials(databaseFile, "test1"))
-        val group = Group(groupName = "cica", icon = KIcon.OTHER)
+        val group = Group(groupName = "cica", icon = KIcon.Apple)
         val groupId = sut.addGroup(group, GroupId.ROOT_ID)
         val expectedGroup = group.copy(id = groupId)
 

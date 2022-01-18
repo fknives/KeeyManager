@@ -5,8 +5,10 @@ import org.fnives.keepass.android.storage.internal.authentication.ActualDatabase
 import org.fnives.keepass.android.storage.internal.authentication.DatabaseAuthenticationEngine
 import org.fnives.keepass.android.storage.internal.database.ActualDatabaseHolder
 import org.fnives.keepass.android.storage.internal.entry.ActualEntryRepository
+import org.fnives.keepass.android.storage.internal.entry.EntryConverter
 import org.fnives.keepass.android.storage.internal.entry.EntryRepository
 import org.fnives.keepass.android.storage.internal.group.ActualGroupRepository
+import org.fnives.keepass.android.storage.internal.group.GroupConverter
 import org.fnives.keepass.android.storage.internal.group.GroupRepository
 import org.fnives.keepass.android.storage.internal.search.ActualSearchEngine
 import org.fnives.keepass.android.storage.internal.search.SearchEngine
@@ -29,12 +31,17 @@ internal class ActualKeePassRepository(
             dispatcherHolder: DispatcherHolder = DispatcherHolder(),
             actualKPDatabaseHolder: ActualDatabaseHolder = ActualDatabaseHolder()
         ): ActualKeePassRepository {
+            val iconConverter = IconConverter(actualKPDatabaseHolder)
+            val groupConverter = GroupConverter(iconConverter)
+            val entryConverter = EntryConverter(iconConverter)
             return ActualKeePassRepository(
                 groupRepository = ActualGroupRepository(
-                    databaseHolder = actualKPDatabaseHolder
+                    databaseHolder = actualKPDatabaseHolder,
+                    groupConverter = groupConverter
                 ),
                 entryRepository = ActualEntryRepository(
-                    databaseHolder = actualKPDatabaseHolder
+                    databaseHolder = actualKPDatabaseHolder,
+                    entryConverter = entryConverter,
                 ),
                 databaseAuthenticationEngine = ActualDatabaseAuthenticationEngine(
                     databaseHolder = actualKPDatabaseHolder,

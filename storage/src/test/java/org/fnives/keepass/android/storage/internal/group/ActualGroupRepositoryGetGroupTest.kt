@@ -11,6 +11,7 @@ import org.fnives.keepass.android.storage.model.Group
 import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.GroupWithEntries
 import org.fnives.keepass.android.storage.model.KIcon
+import org.fnives.keepass.android.storage.testutil.createMockIcon
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -52,9 +53,11 @@ internal class ActualGroupRepositoryGetGroupTest {
         whenever(mockedDoom.name).doReturn("title")
         whenever(mockedDoom.entries).doReturn(emptyList())
         whenever(mockedDoom.groups).doReturn(emptyList())
+        val mockIcon = createMockIcon(KIcon.CDRom.ordinal)
+        whenever(mockedDoom.icon).doReturn(mockIcon)
         whenever(mockDatabase.findGroup(queryId)).thenReturn(mockedDoom)
         val expected = GroupWithEntries(
-            group = Group(GroupId(returnedId), "title", KIcon.OTHER),
+            group = Group(GroupId(returnedId), "title", KIcon.CDRom),
             entries = emptyList()
         )
 
@@ -74,18 +77,22 @@ internal class ActualGroupRepositoryGetGroupTest {
         whenever(mockedEntryDom.uuid).doReturn(returnedEntryId)
         whenever(mockedEntryDom.title).doReturn("cekla")
         whenever(mockedEntryDom.username).doReturn("cekla-2")
+        val mockIcon = createMockIcon(Int.MAX_VALUE)
+        whenever(mockedEntryDom.icon).doReturn(mockIcon)
 
         val mockedDom = mock<DomGroupWrapper>()
         whenever(mockedDom.uuid).doReturn(returnedId)
         whenever(mockedDom.name).doReturn("title")
         whenever(mockedDom.entries).doReturn(listOf(mockedEntryDom))
         whenever(mockedDom.groups).doReturn(emptyList())
+        val mockIcon2 = createMockIcon(Int.MIN_VALUE)
+        whenever(mockedDom.icon).doReturn(mockIcon2)
 
         whenever(mockDatabase.findGroup(queryId)).thenReturn(mockedDom)
 
         val expected = GroupWithEntries(
-            group = Group(GroupId(returnedId), "title", KIcon.OTHER),
-            entries = listOf(Entry(id = EntryId(returnedEntryId), entryName ="cekla", userName = "cekla-2"))
+            group = Group(GroupId(returnedId), "title", KIcon.UNKNOWN),
+            entries = listOf(Entry(id = EntryId(returnedEntryId), entryName = "cekla", userName = "cekla-2", icon = KIcon.UNKNOWN))
         )
 
         val group = sut.getGroup(GroupId(queryId))
@@ -103,18 +110,22 @@ internal class ActualGroupRepositoryGetGroupTest {
         val mockedSubGroupDom = mock<DomGroupWrapper>()
         whenever(mockedSubGroupDom.uuid).doReturn(returnedSubGroupId)
         whenever(mockedSubGroupDom.name).doReturn("cekla")
+        val mockIcon = createMockIcon(KIcon.Book.ordinal)
+        whenever(mockedSubGroupDom.icon).doReturn(mockIcon)
 
         val mockedDom = mock<DomGroupWrapper>()
         whenever(mockedDom.uuid).doReturn(returnedId)
         whenever(mockedDom.name).doReturn("title")
         whenever(mockedDom.entries).doReturn(emptyList())
         whenever(mockedDom.groups).doReturn(listOf(mockedSubGroupDom))
+        val mockIcon2 = createMockIcon(KIcon.Apple.ordinal)
+        whenever(mockedDom.icon).doReturn(mockIcon2)
 
         whenever(mockDatabase.findGroup(queryId)).thenReturn(mockedDom)
 
         val expected = GroupWithEntries(
-            group = Group(GroupId(returnedId), "title", KIcon.OTHER),
-            entries = listOf(Group(GroupId(returnedSubGroupId), "cekla", KIcon.OTHER))
+            group = Group(GroupId(returnedId), "title", KIcon.Apple),
+            entries = listOf(Group(GroupId(returnedSubGroupId), "cekla", KIcon.Book))
         )
 
         val group = sut.getGroup(GroupId(queryId))
@@ -132,25 +143,31 @@ internal class ActualGroupRepositoryGetGroupTest {
         val mockedSubGroupDom = mock<DomGroupWrapper>()
         whenever(mockedSubGroupDom.uuid).doReturn(returnedSubGroupId)
         whenever(mockedSubGroupDom.name).doReturn("cekla")
+        val mockIcon = createMockIcon(KIcon.Certificate.ordinal)
+        whenever(mockedSubGroupDom.icon).doReturn(mockIcon)
 
         val returnedEntryId = UUID(3, 3)
         val mockedEntryDom = mock<DomEntryWrapper>()
         whenever(mockedEntryDom.uuid).doReturn(returnedEntryId)
         whenever(mockedEntryDom.title).doReturn("cekla")
+        val mockIcon2 = createMockIcon(KIcon.Clock.ordinal)
+        whenever(mockedEntryDom.icon).doReturn(mockIcon2)
 
         val mockedDom = mock<DomGroupWrapper>()
         whenever(mockedDom.uuid).doReturn(returnedId)
         whenever(mockedDom.name).doReturn("title")
         whenever(mockedDom.entries).doReturn(listOf(mockedEntryDom))
         whenever(mockedDom.groups).doReturn(listOf(mockedSubGroupDom))
+        val mockIcon3 = createMockIcon(KIcon.WorldStar.ordinal)
+        whenever(mockedDom.icon).doReturn(mockIcon3)
 
         whenever(mockDatabase.findGroup(queryId)).thenReturn(mockedDom)
 
         val expected = GroupWithEntries(
-            group = Group(GroupId(returnedId), "title", KIcon.OTHER),
+            group = Group(GroupId(returnedId), "title", KIcon.WorldStar),
             entries = listOf(
-                Group(GroupId(returnedSubGroupId), "cekla", KIcon.OTHER),
-                Entry(EntryId(returnedEntryId), "cekla", "")
+                Group(GroupId(returnedSubGroupId), "cekla", KIcon.Certificate),
+                Entry(EntryId(returnedEntryId), "cekla", "", KIcon.Clock)
             )
         )
 
@@ -178,26 +195,32 @@ internal class ActualGroupRepositoryGetGroupTest {
         val mockedSubGroupDom = mock<DomGroupWrapper>()
         whenever(mockedSubGroupDom.uuid).doReturn(returnedSubGroupId)
         whenever(mockedSubGroupDom.name).doReturn("cekla")
+        val mockIcon = createMockIcon(KIcon.WorldStar.ordinal)
+        whenever(mockedSubGroupDom.icon).doReturn(mockIcon)
 
         val returnedEntryId = UUID(3, 3)
         val mockedEntryDom = mock<DomEntryWrapper>()
         whenever(mockedEntryDom.uuid).doReturn(returnedEntryId)
         whenever(mockedEntryDom.title).doReturn("cekla")
         whenever(mockedEntryDom.username).doReturn("cekla-username")
+        val mockIcon2 = createMockIcon(KIcon.Checked.ordinal)
+        whenever(mockedEntryDom.icon).doReturn(mockIcon2)
 
         val mockedDom = mock<DomGroupWrapper>()
         whenever(mockedDom.uuid).doReturn(returnedId)
         whenever(mockedDom.name).doReturn("title")
         whenever(mockedDom.entries).doReturn(listOf(mockedEntryDom))
         whenever(mockedDom.groups).doReturn(listOf(mockedSubGroupDom))
+        val mockIcon3 = createMockIcon(KIcon.Digicam.ordinal)
+        whenever(mockedDom.icon).doReturn(mockIcon3)
 
         whenever(mockDatabase.rootGroup).thenReturn(mockedDom)
 
         val expected = GroupWithEntries(
-            group = Group(GroupId(returnedId), "title", KIcon.OTHER),
+            group = Group(GroupId(returnedId), "title", KIcon.Digicam),
             entries = listOf(
-                Group(id = GroupId(returnedSubGroupId), groupName = "cekla", icon = KIcon.OTHER),
-                Entry(id = EntryId(returnedEntryId), entryName = "cekla", userName = "cekla-username")
+                Group(id = GroupId(returnedSubGroupId), groupName = "cekla", icon = KIcon.WorldStar),
+                Entry(id = EntryId(returnedEntryId), entryName = "cekla", userName = "cekla-username", KIcon.Checked)
             )
         )
 

@@ -6,5 +6,5 @@ package org.fnives.keepass.android.storage.model
 data class Group(
     val id: GroupId = GroupId.ROOT_ID,
     val groupName: String,
-    val icon: KIcon
+    val icon: KIcon = KIcon.Folder
 ) : GroupOrEntry()

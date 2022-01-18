@@ -1,5 +1,6 @@
 package org.fnives.keepass.android.storage.internal.group
 
+import org.fnives.keepass.android.storage.internal.IconConverter
 import org.fnives.keepass.android.storage.internal.database.DatabaseHolder
 import org.fnives.keepass.android.storage.internal.database.getDomById
 import org.fnives.keepass.android.storage.model.Group
@@ -8,7 +9,7 @@ import org.fnives.keepass.android.storage.model.GroupWithEntries
 
 internal class ActualGroupRepository(
     private val databaseHolder: DatabaseHolder,
-    private val groupConverter: GroupConverter = GroupConverter()
+    private val groupConverter: GroupConverter = GroupConverter(IconConverter(databaseHolder))
 ) : GroupRepository {
 
     private val database get() = databaseHolder.database

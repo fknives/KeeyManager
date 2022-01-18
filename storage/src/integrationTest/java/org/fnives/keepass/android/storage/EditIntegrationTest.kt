@@ -46,7 +46,7 @@ class EditIntegrationTest {
     fun editGroupName() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
         sut.authenticate(Credentials(databaseFile, "test1"))
-        val expected = Group(id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID, groupName = "malaria", icon = KIcon.OTHER)
+        val expected = Group(id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID, groupName = "malaria", icon = KIcon.Key)
 
         val groupWithEntries = sut.getGroup(ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID)
         Assertions.assertEquals("cica", groupWithEntries?.group?.groupName)
@@ -62,7 +62,7 @@ class EditIntegrationTest {
     fun editEntryNameModifiesInGroup() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
         sut.authenticate(Credentials(databaseFile, "test1"))
-        val expected = Entry(id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID, entryName = "malaria", userName = "hush-hush")
+        val expected = Entry(id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID, entryName = "malaria", userName = "hush-hush", icon = KIcon.Key)
 
         val entries = sut.getGroup(ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID)?.entries.orEmpty().filterIsInstance<Entry>()
         Assertions.assertEquals(setOf("my-special-entry"), entries.map(Entry::entryName).toSet())
@@ -74,7 +74,7 @@ class EditIntegrationTest {
             password = "",
             url = "",
             notes = "",
-            icon = KIcon.OTHER,
+            icon = KIcon.Key,
         )
         sut.editEntry(editEntry)
 
@@ -95,7 +95,7 @@ class EditIntegrationTest {
             password = "hushy",
             url = "uri-mal",
             notes = "my-personal-notes",
-            icon = KIcon.OTHER,
+            icon = KIcon.Apple,
         )
         val currentEntryDetail = EntryDetailed(
             id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID,
@@ -105,7 +105,7 @@ class EditIntegrationTest {
             url = "entry",
             notes = "uh",
             lastModified = Date(1642018057000),
-            icon = KIcon.OTHER
+            icon = KIcon.Warning
         )
 
         val currentEntry = sut.getEntry(ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID)
