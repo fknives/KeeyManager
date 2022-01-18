@@ -61,7 +61,8 @@ class DeleteIntegrationTest {
         val expectedRootGroupWithEntries = GroupWithEntries(group = expectedRootGroup, entries = listOf(expectedGroup))
         val expectedEntry = Entry(
             id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID,
-            entryName = "my-special-entry"
+            entryName = "my-special-entry",
+            userName = "my"
         )
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf(expectedEntry))
         val expectedEntryDetail = EntryDetailed(

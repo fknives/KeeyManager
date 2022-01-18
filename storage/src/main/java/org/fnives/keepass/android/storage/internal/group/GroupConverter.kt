@@ -20,7 +20,8 @@ class GroupConverter {
     fun convert(domEntryWrapper: DomEntryWrapper): Entry =
         Entry(
             id = EntryId(domEntryWrapper.uuid),
-            entryName = domEntryWrapper.title
+            entryName = domEntryWrapper.title,
+            userName = domEntryWrapper.username.orEmpty()
         )
 
     fun copyTo(from: Group, to: DomGroupWrapper) {

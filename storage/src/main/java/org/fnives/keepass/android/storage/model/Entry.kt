@@ -5,5 +5,6 @@ package org.fnives.keepass.android.storage.model
  */
 data class Entry(
     val id: EntryId,
-    val entryName: String
+    val entryName: String,
+    val userName: String
 ) : GroupOrEntry()

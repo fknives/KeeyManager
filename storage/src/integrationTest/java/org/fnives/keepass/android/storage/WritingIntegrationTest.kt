@@ -64,7 +64,8 @@ class WritingIntegrationTest {
         )
         val expectedEntry = Entry(
             id = entryId,
-            entryName = entryDetail.entryName
+            entryName = entryDetail.entryName,
+            userName = "my"
         )
         Assertions.assertEquals(expectedEntryDetailed, foundEntry)
         Assertions.assertEquals(expectedEntry, foundInGroup)
@@ -112,7 +113,7 @@ class WritingIntegrationTest {
         val groupId = sut.addGroup(group, GroupId.ROOT_ID)
         val entryId = sut.addEntry(entryDetail, groupId)
 
-        val expectedEntry = Entry(id = entryId, entryName = entryDetail.entryName)
+        val expectedEntry = Entry(id = entryId, entryName = entryDetail.entryName, userName = "my")
         val expectedGroup = group.copy(id = groupId)
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf(expectedEntry))
 

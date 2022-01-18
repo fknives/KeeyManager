@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.linguafranca.pwdb.kdbx.dom.DomDatabaseWrapper
 import org.linguafranca.pwdb.kdbx.dom.DomEntryWrapper
 import org.linguafranca.pwdb.kdbx.dom.DomGroupWrapper
 import org.mockito.kotlin.doReturn
@@ -74,6 +73,7 @@ internal class ActualGroupRepositoryGetGroupTest {
         val mockedEntryDom = mock<DomEntryWrapper>()
         whenever(mockedEntryDom.uuid).doReturn(returnedEntryId)
         whenever(mockedEntryDom.title).doReturn("cekla")
+        whenever(mockedEntryDom.username).doReturn("cekla-2")
 
         val mockedDom = mock<DomGroupWrapper>()
         whenever(mockedDom.uuid).doReturn(returnedId)
@@ -85,7 +85,7 @@ internal class ActualGroupRepositoryGetGroupTest {
 
         val expected = GroupWithEntries(
             group = Group(GroupId(returnedId), "title", KIcon.OTHER),
-            entries = listOf(Entry(EntryId(returnedEntryId),"cekla"))
+            entries = listOf(Entry(id = EntryId(returnedEntryId), entryName ="cekla", userName = "cekla-2"))
         )
 
         val group = sut.getGroup(GroupId(queryId))
@@ -114,7 +114,7 @@ internal class ActualGroupRepositoryGetGroupTest {
 
         val expected = GroupWithEntries(
             group = Group(GroupId(returnedId), "title", KIcon.OTHER),
-            entries = listOf(Group(GroupId(returnedSubGroupId),"cekla", KIcon.OTHER))
+            entries = listOf(Group(GroupId(returnedSubGroupId), "cekla", KIcon.OTHER))
         )
 
         val group = sut.getGroup(GroupId(queryId))
@@ -149,8 +149,8 @@ internal class ActualGroupRepositoryGetGroupTest {
         val expected = GroupWithEntries(
             group = Group(GroupId(returnedId), "title", KIcon.OTHER),
             entries = listOf(
-                Group(GroupId(returnedSubGroupId),"cekla", KIcon.OTHER),
-                Entry(EntryId(returnedEntryId),"cekla")
+                Group(GroupId(returnedSubGroupId), "cekla", KIcon.OTHER),
+                Entry(EntryId(returnedEntryId), "cekla", "")
             )
         )
 
@@ -183,6 +183,7 @@ internal class ActualGroupRepositoryGetGroupTest {
         val mockedEntryDom = mock<DomEntryWrapper>()
         whenever(mockedEntryDom.uuid).doReturn(returnedEntryId)
         whenever(mockedEntryDom.title).doReturn("cekla")
+        whenever(mockedEntryDom.username).doReturn("cekla-username")
 
         val mockedDom = mock<DomGroupWrapper>()
         whenever(mockedDom.uuid).doReturn(returnedId)
@@ -195,8 +196,8 @@ internal class ActualGroupRepositoryGetGroupTest {
         val expected = GroupWithEntries(
             group = Group(GroupId(returnedId), "title", KIcon.OTHER),
             entries = listOf(
-                Group(GroupId(returnedSubGroupId),"cekla", KIcon.OTHER),
-                Entry(EntryId(returnedEntryId),"cekla")
+                Group(id = GroupId(returnedSubGroupId), groupName = "cekla", icon = KIcon.OTHER),
+                Entry(id = EntryId(returnedEntryId), entryName = "cekla", userName = "cekla-username")
             )
         )
 
