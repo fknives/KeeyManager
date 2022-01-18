@@ -42,7 +42,9 @@ internal class ActualGroupRepository(
         if (group.id === GroupId.ROOT_ID) {
             throw IllegalArgumentException("Cannot edit the root Group")
         }
-        val domGroupWrapper = database.getDomById(group.id) ?: return
+        val domGroupWrapper = database.getDomById(group.id)
+            ?: throw IllegalArgumentException("Cannot edit non existent Group")
+
         groupConverter.copyTo(from = group, to = domGroupWrapper)
         database.save()
     }
