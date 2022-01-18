@@ -11,6 +11,7 @@ import org.fnives.keepass.android.storage.model.Credentials
 import org.fnives.keepass.android.storage.model.Entry
 import org.fnives.keepass.android.storage.model.EntryDetailed
 import org.fnives.keepass.android.storage.model.Group
+import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.KIcon
 import org.fnives.keepass.android.storage.testutil.TestDispatcherHolder
 import org.fnives.keepass.android.storage.testutil.copyResource
@@ -116,6 +117,20 @@ class EditIntegrationTest {
 
         val expectedWithUpdatedDate = expected.copy(lastModified = actual?.lastModified ?: expected.lastModified)
         Assertions.assertEquals(expectedWithUpdatedDate, actual)
+    }
+
+    @DisplayName("GIVEN root group WHEN editing it's name THEN exception is thrown")
+    @Test
+    fun cannotEditRootGroup() = runBlocking<Unit> {
+        testDispatcherHolder.single.resumeDispatcher()
+        sut.authenticate(Credentials(databaseFile, "test1"))
+        val rootGroupEdited = Group(id = GroupId.ROOT_ID, groupName = "malaria", icon = KIcon.Key)
+
+        val expected = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            runBlocking { sut.editGroup(rootGroupEdited) }
+        }
+        Assertions.assertEquals("Cannot edit the root Group", expected.message)
+        Assertions.assertEquals(null, expected.cause)
     }
 
 }

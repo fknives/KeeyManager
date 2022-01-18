@@ -10,8 +10,11 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.linguafranca.pwdb.kdbx.dom.DomDatabaseWrapper
+import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.verifyZeroInteractions
 import org.mockito.kotlin.whenever
 
 internal class ActualGroupRepositoryDeleteGroupTest {
@@ -41,7 +44,23 @@ internal class ActualGroupRepositoryDeleteGroupTest {
     fun authenticationException() {
         whenever(mockDatabaseHolder.database).thenThrow(AuthenticationException())
         Assertions.assertThrows(AuthenticationException::class.java) {
-            runBlocking { sut.deleteGroup(GroupId(UUID(0,0))) }
+            runBlocking { sut.deleteGroup(GroupId(UUID(0, 0))) }
+        }
+    }
+
+    @DisplayName("GIVEN Normal Group WHEN deleted THEN delete is called")
+    @Test
+    fun groupDelete() {
+        runBlocking {
+            verifyZeroInteractions(mockDatabase)
+
+            val groupID = GroupId(UUID.randomUUID())
+            sut.deleteGroup(groupID)
+
+            val inOrder = inOrder(mockDatabase)
+            inOrder.verify(mockDatabase).deleteGroup(groupID.uuid)
+            inOrder.verify(mockDatabase).save()
+            inOrder.verifyNoMoreInteractions()
         }
     }
 }

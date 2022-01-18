@@ -28,7 +28,8 @@ internal class ActualGroupRepository(
     }
 
     override suspend fun addGroup(group: Group, parentId: GroupId): GroupId {
-        val parentDom = database.getDomById(parentId) ?: throw IllegalArgumentException("Couldn't find parent")
+        val parentDom = database.getDomById(parentId)
+            ?: throw IllegalArgumentException("Couldn't find parent to add group to")
         val domGroupWrapper = database.newGroup()
         groupConverter.copyTo(from = group, to = domGroupWrapper)
         parentDom.addGroup(domGroupWrapper)
@@ -39,7 +40,7 @@ internal class ActualGroupRepository(
 
     override suspend fun editGroup(group: Group) {
         if (group.id === GroupId.ROOT_ID) {
-            throw IllegalArgumentException("Cannot delete the root Group")
+            throw IllegalArgumentException("Cannot edit the root Group")
         }
         val domGroupWrapper = database.getDomById(group.id) ?: return
         groupConverter.copyTo(from = group, to = domGroupWrapper)

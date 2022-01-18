@@ -21,7 +21,8 @@ internal class ActualEntryRepository(
     }
 
     override suspend fun addEntry(entry: EntryDetailed, parentId: GroupId): EntryId {
-        val parentDom = database.getDomById(parentId) ?: throw IllegalArgumentException("Parent not found")
+        val parentDom = database.getDomById(parentId)
+            ?: throw IllegalArgumentException("Couldn't find parent to add entry to")
         val dom = database.newEntry()
         entryConverter.copyTo(from = entry, to = dom)
         parentDom.addEntry(dom)

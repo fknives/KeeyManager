@@ -1,6 +1,7 @@
 package org.fnives.keepass.android.storage
 
 import java.io.File
+import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
@@ -142,7 +143,7 @@ class WritingIntegrationTest {
         val groupId = sut.addGroup(group, GroupId.ROOT_ID)
         val expectedGroup = group.copy(id = groupId)
 
-        val copiedFile = File.createTempFile("copied-test-file","kdbx")
+        val copiedFile = File.createTempFile("copied-test-file", "kdbx")
         try {
             databaseFile.copyTo(copiedFile, overwrite = true)
 
@@ -153,5 +154,39 @@ class WritingIntegrationTest {
         } finally {
             copiedFile.delete()
         }
+    }
+
+    @DisplayName("GIVEN subGroup WHEN writing subGroup into non existent group THEN exception is thrown")
+    @Test
+    fun addingSubGroupToNonExistentGroupThrows() = runBlocking<Unit> {
+        testDispatcherHolder.single.resumeDispatcher()
+        sut.authenticate(Credentials(databaseFile, "test1"))
+        val group = Group(groupName = "cica", icon = KIcon.FolderOpen)
+
+        val expected = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            runBlocking { sut.addGroup(group, GroupId(UUID(15000, 15000))) }
+        }
+        Assertions.assertEquals("Couldn't find parent to add group to", expected.message)
+        Assertions.assertEquals(null, expected.cause)
+    }
+
+    @DisplayName("GIVEN subGroup WHEN writing subGroup into non existent group THEN exception is thrown")
+    @Test
+    fun addingEntryToNonExistentGroupThrows() = runBlocking {
+        testDispatcherHolder.single.resumeDispatcher()
+        sut.authenticate(Credentials(databaseFile, "test1"))
+        val entry = EntryDetailed(
+            entryName = "entryName",
+            userName = "userName",
+            password = "password",
+            url = "url",
+            notes = "notes"
+        )
+
+        val expected = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            runBlocking { sut.addEntry(entry, GroupId(UUID(15000, 15000))) }
+        }
+        Assertions.assertEquals("Couldn't find parent to add entry to", expected.message)
+        Assertions.assertEquals(null, expected.cause)
     }
 }

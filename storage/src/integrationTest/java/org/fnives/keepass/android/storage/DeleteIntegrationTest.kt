@@ -166,6 +166,20 @@ class DeleteIntegrationTest {
         }
     }
 
+    @DisplayName("GIVEN_filled_database_WHEN_deleting_ROOT_THEN_exceptionIsThrown")
+    @Test
+    fun rootGroupCannotBeDeleted() = runBlocking {
+        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
+        testDispatcherHolder.single.resumeDispatcher()
+        sut.authenticate(Credentials(databaseFile, "test1"))
+
+        val expected = Assertions.assertThrows(IllegalArgumentException::class.java) {
+            runBlocking { sut.deleteGroup(GroupId.ROOT_ID) }
+        }
+        Assertions.assertEquals("Cannot delete the root Group", expected.message)
+        Assertions.assertEquals(null, expected.cause)
+    }
+
     companion object {
         val ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID = EntryId(uuid = UUID.fromString("5838c71d-56a1-4a4d-b229-9e4a6562612f"))
         val ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID = GroupId(uuid = UUID.fromString("09b083e9-472f-4385-9991-dac1abdef04c"))
