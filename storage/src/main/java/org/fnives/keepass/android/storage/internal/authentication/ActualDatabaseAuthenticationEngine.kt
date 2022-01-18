@@ -31,7 +31,7 @@ internal class ActualDatabaseAuthenticationEngine(
             }
         } catch (throwable: Throwable) {
             Logging.log(throwable)
-            throw AuthenticationException(cause = throwable)
+            throw AuthenticationException(message = "Couldn't open database", cause = throwable)
         }
     }
 
