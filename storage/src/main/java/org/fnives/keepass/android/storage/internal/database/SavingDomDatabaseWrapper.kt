@@ -10,7 +10,7 @@ import org.linguafranca.pwdb.kdbx.dom.DomEntryWrapper
 import org.linguafranca.pwdb.kdbx.dom.DomGroupWrapper
 import org.linguafranca.pwdb.kdbx.dom.DomIconWrapper
 
-class SavingDomDatabaseWrapper(
+internal class SavingDomDatabaseWrapper(
     private val credentials: Credentials,
     private val delegate: Database<DomDatabaseWrapper, DomGroupWrapper, DomEntryWrapper, DomIconWrapper>,
     private val outputStreamFactory: () -> OutputStream,

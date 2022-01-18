@@ -6,7 +6,7 @@ import org.linguafranca.pwdb.kdbx.dom.DomEntryWrapper
 import org.linguafranca.pwdb.kdbx.dom.DomGroupWrapper
 import org.linguafranca.pwdb.kdbx.dom.DomIconWrapper
 
-interface SavingDataBase : Database<DomDatabaseWrapper, DomGroupWrapper, DomEntryWrapper, DomIconWrapper> {
+internal interface SavingDataBase : Database<DomDatabaseWrapper, DomGroupWrapper, DomEntryWrapper, DomIconWrapper> {
 
     suspend fun save()
 }
