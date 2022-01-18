@@ -51,12 +51,14 @@ class DeleteIntegrationTest {
         val expectedRootGroup = Group(
             id = GroupId.ROOT_ID,
             groupName = "Root",
-            icon = KIcon.Folder
+            icon = KIcon.Folder,
+            entryOrGroupCount = 1
         )
         val expectedGroup = Group(
             id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID,
             groupName = "cica",
-            icon = KIcon.Key
+            icon = KIcon.Key,
+            entryOrGroupCount = 1
         )
         val expectedRootGroupWithEntries = GroupWithEntries(group = expectedRootGroup, entries = listOf(expectedGroup))
         val expectedEntry = Entry(
@@ -95,7 +97,8 @@ class DeleteIntegrationTest {
         val expectedGroup = Group(
             id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID,
             groupName = "cica",
-            icon = KIcon.Key
+            icon = KIcon.Key,
+            entryOrGroupCount = 0
         )
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf())
 
@@ -117,7 +120,8 @@ class DeleteIntegrationTest {
         val expectedRootGroup = Group(
             id = GroupId.ROOT_ID,
             groupName = "Root",
-            icon = KIcon.Folder
+            icon = KIcon.Folder,
+            entryOrGroupCount = 0
         )
         val expectedRootGroupWithEntries = GroupWithEntries(expectedRootGroup, listOf())
         val entryId = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID
@@ -142,7 +146,8 @@ class DeleteIntegrationTest {
         val expectedRootGroup = Group(
             id = GroupId.ROOT_ID,
             groupName = "Root",
-            icon = KIcon.Folder
+            icon = KIcon.Folder,
+            entryOrGroupCount = 0
         )
         val expectedRootGroupWithEntries = GroupWithEntries(expectedRootGroup, listOf())
         val entryId = ENTRY_IN_GROUP_RECYCLEBIN_OFF_ENTRY_ID

@@ -47,7 +47,12 @@ class EditIntegrationTest {
     fun editGroupName() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
         sut.authenticate(Credentials(databaseFile, "test1"))
-        val expected = Group(id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID, groupName = "malaria", icon = KIcon.Key)
+        val expected = Group(
+            id = ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID,
+            groupName = "malaria",
+            icon = KIcon.Key,
+            entryOrGroupCount = 1
+        )
 
         val groupWithEntries = sut.getGroup(ENTRY_IN_GROUP_RECYCLEBIN_OFF_GROUP_ID)
         Assertions.assertEquals("cica", groupWithEntries?.group?.groupName)
@@ -124,7 +129,11 @@ class EditIntegrationTest {
     fun cannotEditRootGroup() = runBlocking<Unit> {
         testDispatcherHolder.single.resumeDispatcher()
         sut.authenticate(Credentials(databaseFile, "test1"))
-        val rootGroupEdited = Group(id = GroupId.ROOT_ID, groupName = "malaria", icon = KIcon.Key)
+        val rootGroupEdited = Group(
+            id = GroupId.ROOT_ID,
+            groupName = "malaria",
+            icon = KIcon.Key
+        )
 
         val expected = Assertions.assertThrows(IllegalArgumentException::class.java) {
             runBlocking { sut.editGroup(rootGroupEdited) }

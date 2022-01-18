@@ -80,10 +80,12 @@ class WritingIntegrationTest {
         sut.authenticate(Credentials(databaseFile, "test1"))
         val group = Group(groupName = "cica", icon = KIcon.FolderOpen)
         val groupId = sut.addGroup(group, GroupId.ROOT_ID)
+
         val subGroup = Group(groupName = "cica2", icon = KIcon.BlackBerry)
         val subGroupId = sut.addGroup(subGroup, groupId)
-        val expectedGroup = group.copy(id = groupId)
-        val expectedSubGroup = subGroup.copy(id = subGroupId)
+
+        val expectedGroup = group.copy(id = groupId, entryOrGroupCount = 1)
+        val expectedSubGroup = subGroup.copy(id = subGroupId, entryOrGroupCount = 0)
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf(expectedSubGroup))
         val expectedSubGroupWithEntries = GroupWithEntries(expectedSubGroup, emptyList())
 
@@ -115,7 +117,7 @@ class WritingIntegrationTest {
         val entryId = sut.addEntry(entryDetail, groupId)
 
         val expectedEntry = Entry(id = entryId, entryName = entryDetail.entryName, userName = "my", icon = KIcon.Key)
-        val expectedGroup = group.copy(id = groupId)
+        val expectedGroup = group.copy(id = groupId, entryOrGroupCount = 1)
         val expectedGroupWithEntries = GroupWithEntries(expectedGroup, listOf(expectedEntry))
 
         val foundGroup = sut.getGroup(groupId)
@@ -188,5 +190,27 @@ class WritingIntegrationTest {
         }
         Assertions.assertEquals("Couldn't find parent to add entry to", expected.message)
         Assertions.assertEquals(null, expected.cause)
+    }
+
+    @DisplayName("GIVEN_multiple_groups_and_entries_written_WHEN_accessed_THEN_it_is_returned_with_correct_counts")
+    @Test
+    fun writingMultipleGroupsAndEntries() = runBlocking {
+        testDispatcherHolder.single.resumeDispatcher()
+        sut.authenticate(Credentials(databaseFile, "test1"))
+        val group = Group(groupName = "cica", icon = KIcon.FolderOpen)
+        val groupId = sut.addGroup(group, GroupId.ROOT_ID)
+        val subGroup1 = Group(groupName = "subcica1", icon = KIcon.FolderOpen)
+        sut.addGroup(subGroup1, groupId)
+        val subGroup2 = Group(groupName = "subcica2", icon = KIcon.FolderOpen)
+        sut.addGroup(subGroup2, groupId)
+        val entry = EntryDetailed(entryName = "", userName = "", password = "", url = "", notes = "")
+        sut.addEntry(entry, groupId)
+
+        val expectedCount = 3
+
+        val foundGroups = sut.getGroup(GroupId.ROOT_ID)?.entries.orEmpty().filterIsInstance<Group>()
+
+        Assertions.assertEquals(1, foundGroups.size)
+        Assertions.assertEquals(expectedCount, foundGroups.first().entryOrGroupCount)
     }
 }

@@ -7,14 +7,14 @@ internal class GroupTest {
 
     @Test
     fun givenRootIdThenIsRootTrue() {
-        val group = Group(GroupId.ROOT_ID,"",KIcon.Digicam)
+        val group = Group(id = GroupId.ROOT_ID, groupName = "")
 
         Assertions.assertTrue(group.isRoot)
     }
 
     @Test
     fun givenEqualGroupIdToRootThenIsRootTrue() {
-        val group = Group(GroupId.ROOT_ID.copy(),"",KIcon.Digicam)
+        val group = Group(id = GroupId.ROOT_ID.copy(), groupName = "")
 
         Assertions.assertFalse(group.isRoot)
     }

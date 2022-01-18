@@ -6,6 +6,7 @@ package org.fnives.keepass.android.storage.model
 data class Group(
     val id: GroupId = GroupId.GENERATE_ID,
     val groupName: String,
+    val entryOrGroupCount: Int = 0,
     val icon: KIcon = KIcon.Folder
 ) : GroupOrEntry() {
     val isRoot: Boolean = id === GroupId.ROOT_ID

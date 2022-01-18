@@ -15,6 +15,7 @@ internal class GroupConverter(private val iconConverter: IconConverter) {
         Group(
             id = if (domGroupWrapper.isRootGroup) GroupId.ROOT_ID else GroupId(domGroupWrapper.uuid),
             groupName = domGroupWrapper.name,
+            entryOrGroupCount = domGroupWrapper.entriesCount + domGroupWrapper.groupsCount,
             icon = iconConverter.convert(domGroupWrapper.icon)
         )
 
