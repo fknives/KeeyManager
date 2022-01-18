@@ -8,5 +8,5 @@ internal class ActualDatabaseHolder : DatabaseHolder {
     var _database: SavingDataBase? = null
 
     override val database: SavingDataBase
-        get() = _database ?: throw AuthenticationException()
+        get() = _database ?: throw AuthenticationException("Database is not initialized / authenticated")
 }
