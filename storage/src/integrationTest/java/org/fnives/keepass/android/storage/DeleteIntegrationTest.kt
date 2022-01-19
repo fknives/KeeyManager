@@ -5,6 +5,7 @@ import java.util.Date
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import org.fnives.keepass.android.storage.exception.AuthenticationException
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
 import org.fnives.keepass.android.storage.model.Credentials
 import org.fnives.keepass.android.storage.model.Entry
@@ -183,6 +184,23 @@ class DeleteIntegrationTest {
         }
         Assertions.assertEquals("Cannot delete the root Group", expected.message)
         Assertions.assertEquals(null, expected.cause)
+    }
+
+    @DisplayName("GIVEN unauthenticated DB WHEN deleting THEN exception is thrown")
+    @Test
+    fun unauthenticated() {
+        databaseFile = copyResource("empty.kdbx")
+        val actualGroup = Assertions.assertThrows(AuthenticationException::class.java) {
+            runBlocking { sut.deleteGroup(GroupId(UUID(1, 1))) }
+        }
+
+        Assertions.assertEquals("Database is not initialized / authenticated", actualGroup.message)
+
+        val actualEntry = Assertions.assertThrows(AuthenticationException::class.java) {
+            runBlocking { sut.deleteEntry(EntryId(UUID(1, 1))) }
+        }
+
+        Assertions.assertEquals("Database is not initialized / authenticated", actualEntry.message)
     }
 
     companion object {

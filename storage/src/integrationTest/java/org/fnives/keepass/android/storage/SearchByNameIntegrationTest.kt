@@ -4,6 +4,7 @@ import java.io.File
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import org.fnives.keepass.android.storage.exception.AuthenticationException
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
 import org.fnives.keepass.android.storage.model.Credentials
 import org.fnives.keepass.android.storage.model.Entry
@@ -188,5 +189,17 @@ class SearchByNameIntegrationTest {
         val actual = sut.search("yy", scope = subGroupId2)
 
         Assertions.assertEquals(expected, actual)
+    }
+
+    @DisplayName("GIVEN unauthenticated DB WHEN searching by name THEN exception is thrown")
+    @Test
+    fun unauthenticated() {
+        runBlocking { sut.disconnect() }
+        databaseFile = copyResource("empty.kdbx")
+        val actual = Assertions.assertThrows(AuthenticationException::class.java) {
+            runBlocking { sut.search(name = "") }
+        }
+
+        Assertions.assertEquals("Database is not initialized / authenticated", actual.message)
     }
 }

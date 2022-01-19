@@ -1,6 +1,7 @@
 package org.fnives.keepass.android.storage
 
 import java.io.File
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -8,6 +9,7 @@ import kotlinx.coroutines.test.TestCoroutineScope
 import org.fnives.keepass.android.storage.exception.AuthenticationException
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
 import org.fnives.keepass.android.storage.model.Credentials
+import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.testutil.TestDispatcherHolder
 import org.fnives.keepass.android.storage.testutil.copyResource
 import org.junit.jupiter.api.AfterEach
@@ -19,6 +21,7 @@ import org.mockito.exceptions.verification.NoInteractionsWanted
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.verifyZeroInteractions
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AuthenticationIntegrationTest {
 
     private lateinit var sut: KeePassRepository
@@ -80,7 +83,16 @@ class AuthenticationIntegrationTest {
     }
 
     @Test
-    fun disconnectTest() {
-        TODO()
+    fun disconnectTest() = runBlocking {
+        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
+        testDispatcherHolder.single.resumeDispatcher()
+        sut.authenticate(Credentials(databaseFile, "test1"))
+        sut.disconnect()
+
+        val actual = Assertions.assertThrows(AuthenticationException::class.java) {
+            runBlocking { sut.getGroup(GroupId.ROOT_ID) }
+        }
+
+        Assertions.assertEquals("Database is not initialized / authenticated", actual.message)
     }
 }

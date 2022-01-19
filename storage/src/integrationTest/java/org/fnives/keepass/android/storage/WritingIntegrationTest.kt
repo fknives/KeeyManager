@@ -4,10 +4,12 @@ import java.io.File
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import org.fnives.keepass.android.storage.exception.AuthenticationException
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
 import org.fnives.keepass.android.storage.model.Credentials
 import org.fnives.keepass.android.storage.model.Entry
 import org.fnives.keepass.android.storage.model.EntryDetailed
+import org.fnives.keepass.android.storage.model.EntryId
 import org.fnives.keepass.android.storage.model.Group
 import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.GroupWithEntries
@@ -212,5 +214,32 @@ class WritingIntegrationTest {
 
         Assertions.assertEquals(1, foundGroups.size)
         Assertions.assertEquals(expectedCount, foundGroups.first().entryOrGroupCount)
+    }
+
+    @DisplayName("GIVEN unauthenticated DB WHEN adding THEN exception is thrown")
+    @Test
+    fun unauthenticated() {
+        databaseFile = copyResource("empty.kdbx")
+        val actualGroup = Assertions.assertThrows(AuthenticationException::class.java) {
+            runBlocking { sut.addGroup(Group(id = GroupId(UUID(1, 1)), groupName = "alma"), GroupId.ROOT_ID) }
+        }
+
+        Assertions.assertEquals("Database is not initialized / authenticated", actualGroup.message)
+
+        val actualEntry = Assertions.assertThrows(AuthenticationException::class.java) {
+            runBlocking {
+                val entryDetailed = EntryDetailed(
+                    id = EntryId(UUID(1, 1)),
+                    entryName = "",
+                    userName = "",
+                    password = "",
+                    url = "",
+                    notes = ""
+                )
+                sut.addEntry(entryDetailed, GroupId.ROOT_ID)
+            }
+        }
+
+        Assertions.assertEquals("Database is not initialized / authenticated", actualEntry.message)
     }
 }
