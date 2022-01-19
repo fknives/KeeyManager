@@ -1,0 +1,23 @@
+task codeAnalysis {
+    group = 'verification'
+    description = 'Run all CodeAnalysis tools'
+}
+afterEvaluate {
+    codeAnalysis.dependsOn "detekt"
+
+    subprojects { module ->
+        codeAnalysis.dependsOn "${module.name}:ktlintCheck"
+        plugins.withType(JavaPlugin).whenPluginAdded {
+            codeAnalysis.dependsOn "${module.name}:lint"
+        }
+
+        plugins.withId("com.android.application") {
+            codeAnalysis.dependsOn "${module.name}:lintRelease"
+        }
+
+        plugins.withId("com.android.library") {
+            codeAnalysis.dependsOn "${module.name}:lintRelease"
+        }
+    }
+}
+// verify via ./gradlew codeAnalysis --dry-run

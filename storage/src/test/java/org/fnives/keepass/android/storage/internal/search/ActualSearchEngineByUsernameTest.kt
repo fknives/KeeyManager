@@ -68,8 +68,8 @@ class ActualSearchEngineByUsernameTest {
         whenever(mockDatabase.rootGroup).doReturn(mockRoot)
 
         val expected = listOf(
-            Entry(id = EntryId(UUID(1, 2)), entryName = "sissyyy", userName ="uff", icon = KIcon.Clock),
-            Entry(id = EntryId(UUID(1, 3)), entryName = "alma", userName ="bananos", icon = KIcon.UNKNOWN)
+            Entry(id = EntryId(UUID(1, 2)), entryName = "sissyyy", userName = "uff", icon = KIcon.Clock),
+            Entry(id = EntryId(UUID(1, 3)), entryName = "alma", userName = "bananos", icon = KIcon.UNKNOWN)
         )
 
         val actual = sut.searchByUsername(username = "sis", scope = GroupId.ROOT_ID)
@@ -127,14 +127,14 @@ class ActualSearchEngineByUsernameTest {
 
         val mockGroup = mock<DomGroupWrapper>()
         whenever(mockGroup.findEntries(anyOrNull<DBEntry.Matcher>(), anyOrNull())).doReturn(listOf(mockMatchingEntry, mockMatchingEntry2))
-        whenever(mockDatabase.findGroup(UUID(123,321))).doReturn(mockGroup)
+        whenever(mockDatabase.findGroup(UUID(123, 321))).doReturn(mockGroup)
 
         val expected = listOf(
-            Entry(id = EntryId(UUID(1, 2)), entryName = "sissyyy", userName ="uff", icon = KIcon.Clock),
-            Entry(id = EntryId(UUID(1, 3)), entryName = "alma", userName ="bananos", icon = KIcon.UNKNOWN)
+            Entry(id = EntryId(UUID(1, 2)), entryName = "sissyyy", userName = "uff", icon = KIcon.Clock),
+            Entry(id = EntryId(UUID(1, 3)), entryName = "alma", userName = "bananos", icon = KIcon.UNKNOWN)
         )
 
-        val actual = sut.searchByUsername(username = "sis", scope = GroupId(UUID(123,321)))
+        val actual = sut.searchByUsername(username = "sis", scope = GroupId(UUID(123, 321)))
 
         Assertions.assertEquals(expected, actual)
     }

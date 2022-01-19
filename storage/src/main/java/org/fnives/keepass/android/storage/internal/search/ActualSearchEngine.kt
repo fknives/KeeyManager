@@ -7,8 +7,8 @@ import org.fnives.keepass.android.storage.internal.group.GroupConverter
 import org.fnives.keepass.android.storage.model.Entry
 import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.GroupOrEntry
-import org.linguafranca.pwdb.kdbx.dom.DomGroupWrapper
 import org.linguafranca.pwdb.Entry as DBEntry
+import org.linguafranca.pwdb.kdbx.dom.DomGroupWrapper
 
 internal class ActualSearchEngine(
     private val databaseHolder: DatabaseHolder,
@@ -16,7 +16,6 @@ internal class ActualSearchEngine(
 ) : SearchEngine {
 
     private val database get() = databaseHolder.database
-
 
     override suspend fun search(name: String, scope: GroupId): List<GroupOrEntry> {
         val dom = database.getDomById(scope) ?: return emptyList()

@@ -7,8 +7,6 @@ import org.fnives.keepass.android.storage.internal.database.DatabaseHolder
 import org.fnives.keepass.android.storage.internal.database.SavingDataBase
 import org.fnives.keepass.android.storage.model.EntryDetailed
 import org.fnives.keepass.android.storage.model.EntryId
-import org.fnives.keepass.android.storage.model.Group
-import org.fnives.keepass.android.storage.model.GroupId
 import org.fnives.keepass.android.storage.model.KIcon
 import org.fnives.keepass.android.storage.testutil.createMockIcon
 import org.junit.jupiter.api.Assertions

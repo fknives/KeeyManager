@@ -7,5 +7,7 @@ subprojects {
             exclude("**/generated/**")
             include("**/kotlin/**")
         }
+
+        additionalEditorconfigFile.set(file("../ktlint/.editorconfig"))
     }
 }

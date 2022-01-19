@@ -37,7 +37,7 @@ class ActualEntryRepositoryGetTest {
     @DisplayName("GIVEN proper Entry WHEN requested THEN its parsed and returned")
     @Test
     fun verifyEntryParsing() = runBlocking {
-        val entryId = EntryId(UUID(5,4))
+        val entryId = EntryId(UUID(5, 4))
         val expectedEntryDetailed = EntryDetailed(
             id = entryId,
             entryName = "1",
@@ -68,7 +68,7 @@ class ActualEntryRepositoryGetTest {
     @DisplayName("GIVEN proper Entry with invalid icon WHEN requested THEN its parsed and returned")
     @Test
     fun verifyInvalidIConParsing() = runBlocking {
-        val entryId = EntryId(UUID(5,4))
+        val entryId = EntryId(UUID(5, 4))
         val expectedEntryDetailed = EntryDetailed(
             id = entryId,
             entryName = "1",
@@ -99,7 +99,7 @@ class ActualEntryRepositoryGetTest {
     @DisplayName("GIVEN notFoundEntry WHEN requested THEN its parsed and returned")
     @Test
     fun notFoundEntry() = runBlocking {
-        val entryId = EntryId(UUID(5,4))
+        val entryId = EntryId(UUID(5, 4))
         whenever(mockDatabase.findEntry(entryId.uuid)).doReturn(null)
 
         val actual = sut.getEntry(entryId)

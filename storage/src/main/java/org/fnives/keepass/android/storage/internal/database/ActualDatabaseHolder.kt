@@ -4,9 +4,10 @@ import org.fnives.keepass.android.storage.exception.AuthenticationException
 
 internal class ActualDatabaseHolder : DatabaseHolder {
 
-    @Suppress("PropertyName")
+    @Suppress("PropertyName", "VariableNaming")
     var _database: SavingDataBase? = null
 
     override val database: SavingDataBase
-        get() = _database ?: throw AuthenticationException("Database is not initialized / authenticated")
+        get() = _database
+            ?: throw AuthenticationException("Database is not initialized / authenticated")
 }

@@ -141,5 +141,4 @@ class EditIntegrationTest {
         Assertions.assertEquals("Cannot edit the root Group", expected.message)
         Assertions.assertEquals(null, expected.cause)
     }
-
 }

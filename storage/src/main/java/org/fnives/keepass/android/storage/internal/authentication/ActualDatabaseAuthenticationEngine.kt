@@ -15,19 +15,23 @@ internal class ActualDatabaseAuthenticationEngine(
     private val dispatcherHolder: DispatcherHolder
 ) : DatabaseAuthenticationEngine {
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun authenticate(credentials: Credentials) {
         val kdbxCredentials = KdbxCreds(credentials.password.toByteArray())
 
         try {
             withContext(dispatcherHolder.single) {
                 @Suppress("BlockingMethodInNonBlockingContext")
-                databaseHolder._database = DomDatabaseWrapper.load(kdbxCredentials, credentials.databaseInputStream)
-                    .wrapIntoAutoSaving(
-                        kdbxCredentials,
-                        credentials.databaseOutputStreamFactory,
-                        dispatcherHolder.single
-                    )
-
+                val db = DomDatabaseWrapper.load(
+                    kdbxCredentials,
+                    credentials.databaseInputStream
+                )
+                val wrapped = db.wrapIntoAutoSaving(
+                    kdbxCredentials,
+                    credentials.databaseOutputStreamFactory,
+                    dispatcherHolder.single
+                )
+                databaseHolder._database = wrapped
             }
         } catch (throwable: Throwable) {
             Logging.log(throwable)

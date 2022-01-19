@@ -229,7 +229,7 @@ internal class ActualGroupRepositoryGetGroupTest {
         whenever(mockDatabase.rootGroup).thenReturn(mockedDom)
 
         val expected = GroupWithEntries(
-            group = Group(id = GroupId(returnedId), groupName ="title", icon = KIcon.Digicam, entryOrGroupCount = 2),
+            group = Group(id = GroupId(returnedId), groupName = "title", icon = KIcon.Digicam, entryOrGroupCount = 2),
             entries = listOf(
                 Group(id = GroupId(returnedSubGroupId), groupName = "cekla", icon = KIcon.WorldStar),
                 Entry(id = EntryId(returnedEntryId), entryName = "cekla", userName = "cekla-username", KIcon.Checked)

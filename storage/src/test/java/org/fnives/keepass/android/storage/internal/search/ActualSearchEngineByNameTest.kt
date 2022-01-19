@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.linguafranca.pwdb.Entry as DBEntry
 import org.linguafranca.pwdb.kdbx.dom.DomEntryWrapper
 import org.linguafranca.pwdb.kdbx.dom.DomGroupWrapper
 import org.mockito.kotlin.anyOrNull
@@ -23,7 +24,6 @@ import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import org.linguafranca.pwdb.Entry as DBEntry
 
 internal class ActualSearchEngineByNameTest {
 
@@ -62,9 +62,9 @@ internal class ActualSearchEngineByNameTest {
 
     @Test
     fun searchInNonExistentGroup() = runBlocking {
-        whenever(mockDatabase.findGroup(UUID(100,200))).doReturn(null)
+        whenever(mockDatabase.findGroup(UUID(100, 200))).doReturn(null)
 
-        val actual = sut.search(name = "sis", scope = GroupId(UUID(100,200)))
+        val actual = sut.search(name = "sis", scope = GroupId(UUID(100, 200)))
 
         Assertions.assertEquals(emptyList<GroupOrEntry>(), actual)
     }
@@ -206,14 +206,14 @@ internal class ActualSearchEngineByNameTest {
         whenever(mockGroup.groups).doReturn(listOf(mockMatchingGroup))
         whenever(mockGroup.entries).doReturn(emptyList())
         whenever(mockGroup.findEntries(anyOrNull<DBEntry.Matcher>(), anyOrNull())).doReturn(listOf(mockMatchingEntry))
-        whenever(mockDatabase.findGroup(UUID(1000,1000))).doReturn(mockGroup)
+        whenever(mockDatabase.findGroup(UUID(1000, 1000))).doReturn(mockGroup)
 
         val expected = listOf(
             Group(id = GroupId(UUID(1, 1)), groupName = "sissy", entryOrGroupCount = 15, icon = KIcon.Archive),
             Entry(id = EntryId(UUID(1, 2)), entryName = "sissyyy", userName = "uff", icon = KIcon.Clock)
         )
 
-        val actual = sut.search(name = "sis", scope = GroupId(UUID(1000,1000)))
+        val actual = sut.search(name = "sis", scope = GroupId(UUID(1000, 1000)))
 
         Assertions.assertEquals(expected, actual)
     }
