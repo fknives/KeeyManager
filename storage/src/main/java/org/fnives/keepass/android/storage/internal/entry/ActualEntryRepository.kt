@@ -32,7 +32,7 @@ internal class ActualEntryRepository(
     }
 
     override suspend fun editEntry(entry: EntryDetailed) {
-        val dom = database.findEntry(entry.id.uuid) ?: return
+        val dom = database.findEntry(entry.id.uuid) ?: throw IllegalArgumentException("Cannot edit non existent Entry")
         entryConverter.copyTo(from = entry, to = dom)
         database.save()
     }
