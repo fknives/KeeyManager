@@ -23,8 +23,10 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+
 apply from: 'gradlescripts/versions.gradle'
 apply from: 'gradlescripts/detekt.gradle'
 apply from: 'gradlescripts/ktlint.gradle'
 apply from: 'gradlescripts/lint.gradle'
 apply from: 'gradlescripts/testoptions.gradle'
+apply from: 'gradlescripts/codeanalysis.gradle'

@@ -7,21 +7,21 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
-
-test {
-    useJUnitPlatform()
-    testLogging {
-        events 'started', 'passed', 'skipped', 'failed'
-        exceptionFormat "full"
-        showStandardStreams true
+sourceSets {
+    test {
+        java.srcDirs += "src/integrationTest/java"
+        resources.srcDirs += "src/integrationTest/resources"
     }
 }
 
 dependencies {
     implementation "org.linguafranca.pwdb:KeePassJava2-dom:$keepass_java_dom_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     // todo look into this in detail
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     testImplementation "org.junit.jupiter:junit-jupiter-params:$testing_junit_jupiter_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$testing_kotlin_mockito_version"
 }
