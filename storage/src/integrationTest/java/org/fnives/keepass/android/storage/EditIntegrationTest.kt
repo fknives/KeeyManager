@@ -1,7 +1,7 @@
 package org.fnives.keepass.android.storage
 
 import java.io.File
-import java.util.Date
+import java.text.SimpleDateFormat
 import java.util.UUID
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -113,7 +113,7 @@ class EditIntegrationTest {
             password = "special",
             url = "entry",
             notes = "uh",
-            lastModified = Date(1642018057000),
+            lastModified = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2022-01-12T22:07:37Z"),
             icon = KIcon.Warning
         )
 
