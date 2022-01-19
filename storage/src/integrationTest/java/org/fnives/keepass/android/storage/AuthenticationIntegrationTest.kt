@@ -1,14 +1,10 @@
 package org.fnives.keepass.android.storage
 
 import java.io.File
-import java.lang.IllegalStateException
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.withTimeout
 import org.fnives.keepass.android.storage.exception.AuthenticationException
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
 import org.fnives.keepass.android.storage.model.Credentials
@@ -21,7 +17,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.exceptions.verification.NoInteractionsWanted
 import org.mockito.kotlin.spy
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyZeroInteractions
 
 class AuthenticationIntegrationTest {
@@ -74,13 +69,18 @@ class AuthenticationIntegrationTest {
 
     @DisplayName("GIVEN in correct credentials WHEN accessed THEN is authenticated")
     @Test
-    fun authenticationWithInCorrectCredentials()  {
+    fun authenticationWithInCorrectCredentials() {
         databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
         testDispatcherHolder.single.resumeDispatcher()
         val exception = Assertions.assertThrows(AuthenticationException::class.java) {
             runBlocking { sut.authenticate(Credentials(databaseFile, "test2")) }
         }
-        Assertions.assertEquals("Couldn't open database",exception.message)
+        Assertions.assertEquals("Couldn't open database", exception.message)
         Assertions.assertFalse(exception.cause == null)
+    }
+
+    @Test
+    fun disconnectTest() {
+        TODO()
     }
 }

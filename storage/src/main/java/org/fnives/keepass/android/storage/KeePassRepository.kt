@@ -73,13 +73,13 @@ interface KeePassRepository {
      * Search Groups and entries by their name
      */
     @Throws(AuthenticationException::class)
-    suspend fun search(name: String, scope: GroupId? = null): List<GroupOrEntry>
+    suspend fun search(name: String, scope: GroupId = GroupId.ROOT_ID): List<GroupOrEntry>
 
     /**
      * Search entries by their url
      */
     @Throws(AuthenticationException::class)
-    suspend fun searchByUrl(name: String, scope: GroupId? = null): List<Entry>
+    suspend fun searchByUsername(username: String, scope: GroupId = GroupId.ROOT_ID): List<Entry>
 
     /**
      * Disconnect from the

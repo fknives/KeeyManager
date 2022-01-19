@@ -8,8 +8,8 @@ import org.fnives.keepass.android.storage.model.GroupOrEntry
 internal interface SearchEngine {
 
     @Throws(AuthenticationException::class)
-    suspend fun search(name: String, scope: GroupId?): List<GroupOrEntry>
+    suspend fun search(name: String, scope: GroupId): List<GroupOrEntry>
 
     @Throws(AuthenticationException::class)
-    suspend fun searchByUrl(name: String, scope: GroupId?): List<Entry>
+    suspend fun searchByUsername(username: String, scope: GroupId): List<Entry>
 }

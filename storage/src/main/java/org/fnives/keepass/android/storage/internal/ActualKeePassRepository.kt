@@ -47,7 +47,10 @@ internal class ActualKeePassRepository(
                     databaseHolder = actualKPDatabaseHolder,
                     dispatcherHolder = dispatcherHolder
                 ),
-                searchEngine = ActualSearchEngine()
+                searchEngine = ActualSearchEngine(
+                    groupConverter = groupConverter,
+                    databaseHolder = actualKPDatabaseHolder
+                )
             )
         }
     }
