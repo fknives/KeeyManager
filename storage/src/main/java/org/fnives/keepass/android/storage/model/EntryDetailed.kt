@@ -12,6 +12,6 @@ data class EntryDetailed(
     val password: String,
     val url: String,
     val notes: String,
-    val lastModified: Date = Date(),
-    val icon: KIcon = KIcon.Key
+    val icon: KIcon = KIcon.Key,
+    val lastModified: Date = Date()
 )
