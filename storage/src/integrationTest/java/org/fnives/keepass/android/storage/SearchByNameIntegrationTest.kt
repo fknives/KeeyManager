@@ -2,6 +2,7 @@ package org.fnives.keepass.android.storage
 
 import java.io.File
 import java.util.UUID
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.fnives.keepass.android.storage.internal.ActualKeePassRepository
 import org.fnives.keepass.android.storage.model.Credentials
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchByNameIntegrationTest {
 
     private lateinit var sut: KeePassRepository
@@ -28,9 +30,12 @@ class SearchByNameIntegrationTest {
     @BeforeEach
     fun setUp() {
         testDispatcherHolder = TestDispatcherHolder(startPaused = true)
+        databaseFile = copyResource("empty.kdbx")
         sut = ActualKeePassRepository.getInstance(
             dispatcherHolder = testDispatcherHolder.dispatcherHolder
         )
+        testDispatcherHolder.single.resumeDispatcher()
+        runBlocking { sut.authenticate(Credentials(databaseFile, "test1")) }
     }
 
     @AfterEach
@@ -41,9 +46,6 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN empty database WHEN searching by name THEN nothing is returned")
     @Test
     fun emptyDBSearch() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
 
         val actual = sut.search("blabla")
 
@@ -53,11 +55,7 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN nonExistentGroup WHEN searching by name THEN nothing is returned")
     @Test
     fun nonExistentGroupSearch() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
-
-        val actual = sut.search("blabla", scope = GroupId(UUID(2,4)))
+        val actual = sut.search("blabla", scope = GroupId(UUID(2, 4)))
 
         Assertions.assertEquals(emptyList<GroupOrEntry>(), actual)
     }
@@ -65,9 +63,6 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN database with non-matching group and entry WHEN searching by name THEN nothing is returned")
     @Test
     fun nonMatching() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
         sut.addGroup(Group(groupName = "1"), GroupId.ROOT_ID)
         sut.addEntry(EntryDetailed(entryName = "2", userName = "", password = "", url = "", notes = ""), GroupId.ROOT_ID)
 
@@ -79,9 +74,6 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN database with matching group and entry WHEN searching by name THEN they are returned")
     @Test
     fun matchingFlat() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
         val groupId = sut.addGroup(Group(groupName = "13"), GroupId.ROOT_ID)
         val entryId = sut.addEntry(EntryDetailed(entryName = "12", userName = "a", password = "", url = "", notes = ""), GroupId.ROOT_ID)
         val expected = listOf(
@@ -97,9 +89,6 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN entry matching by other attributes WHEN searching by name THEN nothing is returned")
     @Test
     fun matchingByOtherAttribute() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
         sut.addEntry(EntryDetailed(entryName = "xxx", userName = "12", password = "", url = "", notes = ""), GroupId.ROOT_ID)
 
         val actual = sut.search("1")
@@ -110,9 +99,6 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN database with matching by other attribute entry WHEN searching by name THEN nothing is returned")
     @Test
     fun deepGroupAndEntrySearch() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
         val groupId = sut.addGroup(Group(groupName = "1"), GroupId.ROOT_ID)
         val groupToFind1Id = sut.addGroup(Group(groupName = "xxYYxx", icon = KIcon.FolderOpen), groupId)
         val subGroupId = sut.addGroup(Group(groupName = "1"), groupId)
@@ -146,9 +132,6 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN database with matching by other attribute entry WHEN searching by name THEN nothing is returned")
     @Test
     fun deepScopedGroupAndEntrySearch() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
         val groupId = sut.addGroup(Group(groupName = "1"), GroupId.ROOT_ID)
         val groupToFind1Id = sut.addGroup(Group(groupName = "xxYYxx", icon = KIcon.FolderOpen), groupId)
         val subGroupId = sut.addGroup(Group(groupName = "1"), groupId)
@@ -179,9 +162,6 @@ class SearchByNameIntegrationTest {
     @DisplayName("GIVEN database with matching by other attribute entry WHEN searching by name THEN nothing is returned")
     @Test
     fun deepScopedGroupMultipleMatchAndEntrySearch() = runBlocking {
-        databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
-        testDispatcherHolder.single.resumeDispatcher()
-        sut.authenticate(Credentials(databaseFile, "test1"))
         val groupId = sut.addGroup(Group(groupName = "1"), GroupId.ROOT_ID)
         val groupToFind1Id = sut.addGroup(Group(groupName = "xxYYxx", icon = KIcon.FolderOpen), groupId)
         val subGroupId = sut.addGroup(Group(groupName = "1"), groupId)
