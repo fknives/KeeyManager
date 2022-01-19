@@ -10,10 +10,10 @@ internal interface EntryRepository {
     @Throws(AuthenticationException::class)
     suspend fun getEntry(entryId: EntryId): EntryDetailed?
 
-    @Throws(AuthenticationException::class)
+    @Throws(AuthenticationException::class, IllegalArgumentException::class)
     suspend fun addEntry(entry: EntryDetailed, parentId: GroupId): EntryId
 
-    @Throws(AuthenticationException::class)
+    @Throws(AuthenticationException::class, IllegalArgumentException::class)
     suspend fun editEntry(entry: EntryDetailed)
 
     @Throws(AuthenticationException::class)

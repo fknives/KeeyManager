@@ -42,7 +42,7 @@ interface KeePassRepository {
     /**
      * Creates a new group in the database, given [GroupId] is ignored
      */
-    @Throws(AuthenticationException::class)
+    @Throws(AuthenticationException::class, IllegalArgumentException::class)
     suspend fun addGroup(group: Group, parentId: GroupId): GroupId
 
     @Throws(AuthenticationException::class, IllegalArgumentException::class)
@@ -60,10 +60,10 @@ interface KeePassRepository {
     /**
      * Creates a new entry in the database, given [EntryId] and [EntryDetailed.lastModified] is ignored
      */
-    @Throws(AuthenticationException::class)
+    @Throws(AuthenticationException::class, IllegalArgumentException::class)
     suspend fun addEntry(entry: EntryDetailed, parentId: GroupId): EntryId
 
-    @Throws(AuthenticationException::class)
+    @Throws(AuthenticationException::class, IllegalArgumentException::class)
     suspend fun editEntry(entry: EntryDetailed)
 
     @Throws(AuthenticationException::class)
