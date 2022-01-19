@@ -73,11 +73,13 @@ internal class ActualSearchEngineByNameTest {
     fun verifyEntryMatcher() = runBlocking {
         val mockRoot = mock<DomGroupWrapper>()
         whenever(mockRoot.groups).doReturn(emptyList())
+        val secondArgumentCaptor = argumentCaptor<Boolean>()
         val matcherArgumentCaptor = argumentCaptor<DBEntry.Matcher>()
-        whenever(mockRoot.findEntries(matcherArgumentCaptor.capture(), anyOrNull())).doReturn(emptyList())
+        whenever(mockRoot.findEntries(matcherArgumentCaptor.capture(), secondArgumentCaptor.capture())).doReturn(emptyList())
         whenever(mockDatabase.rootGroup).doReturn(mockRoot)
         sut.search(name = "sis", scope = GroupId.ROOT_ID)
 
+        Assertions.assertEquals(listOf(true), secondArgumentCaptor.allValues)
         Assertions.assertEquals(1, matcherArgumentCaptor.allValues.size)
         val actualArgumentCaptor = matcherArgumentCaptor.firstValue
 
