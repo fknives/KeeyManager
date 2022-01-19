@@ -39,13 +39,13 @@ internal class ActualDatabaseAuthenticationEngineTest {
         )
     }
 
-    @DisplayName("WHEN_initialized_THEN_no_interactions")
+    @DisplayName("WHEN initialized THEN no interactions")
     @Test
     fun initialized() {
         verifyZeroInteractions(mockDatabaseHolder)
     }
 
-    @DisplayName("GIVEN_proper_database_WHEN_authenticating_THEN_its_opened")
+    @DisplayName("GIVEN proper database WHEN authenticating THEN its opened")
     @Test
     fun successfulDataBaseOpening() = runBlocking {
         val inputStream: InputStream = resourceAsStream("test1.kdbx")
@@ -63,7 +63,7 @@ internal class ActualDatabaseAuthenticationEngineTest {
         verifyNoMoreInteractions(mockDatabaseHolder)
     }
 
-    @DisplayName("GIVEN_open_database_WHEN_disconnecting_THEN_its_closed")
+    @DisplayName("GIVEN open database WHEN disconnecting THEN its closed")
     @Test
     fun databaseClosing() = runBlocking {
         val inputStream: InputStream = resourceAsStream("test1.kdbx")
@@ -84,7 +84,7 @@ internal class ActualDatabaseAuthenticationEngineTest {
         verifyNoMoreInteractions(mockDatabaseHolder)
     }
 
-    @DisplayName("GIVEN_invalid_password_WHEN_authenticating_THEN_exception_is_thrown")
+    @DisplayName("GIVEN invalid password WHEN authenticating THEN exception is thrown")
     @Test
     fun invalidPassword() {
         val inputStream: InputStream = resourceAsStream("test1.kdbx")

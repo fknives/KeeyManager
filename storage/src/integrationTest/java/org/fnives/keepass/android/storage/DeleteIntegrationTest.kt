@@ -43,7 +43,7 @@ class DeleteIntegrationTest {
         databaseFile.delete()
     }
 
-    @DisplayName("GIVEN_filled_database_WHEN_accessed_THEN_data_is_returned")
+    @DisplayName("GIVEN filled database WHEN accessed THEN data is returned")
     @Test
     fun readingFilledDatabase() = runBlocking {
         databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
@@ -89,7 +89,7 @@ class DeleteIntegrationTest {
         Assertions.assertEquals(expectedEntryDetail, foundEntry)
     }
 
-    @DisplayName("GIVEN_filled_database_WHEN_entry_is_deleted_THEN_it_is_no_longer_returned")
+    @DisplayName("GIVEN filled database WHEN entry is deleted THEN it is no longer returned")
     @Test
     fun deletingEntry() = runBlocking {
         databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
@@ -112,7 +112,7 @@ class DeleteIntegrationTest {
         Assertions.assertEquals(null, foundEntry)
     }
 
-    @DisplayName("GIVEN_filled_database_WHEN_entry_is_deleted_THEN_it_is_no_longer_returned")
+    @DisplayName("GIVEN filled database WHEN entry is deleted THEN it is no longer returned")
     @Test
     fun deletingGroup() = runBlocking {
         databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")
@@ -172,7 +172,7 @@ class DeleteIntegrationTest {
         }
     }
 
-    @DisplayName("GIVEN_filled_database_WHEN_deleting_ROOT_THEN_exceptionIsThrown")
+    @DisplayName("GIVEN filled database WHEN deleting ROOT THEN exceptionIsThrown")
     @Test
     fun rootGroupCannotBeDeleted() = runBlocking {
         databaseFile = copyResource("entry-in-group-recyclebin-off.kdbx")

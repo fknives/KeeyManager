@@ -43,7 +43,7 @@ class WritingIntegrationTest {
         databaseFile.delete()
     }
 
-    @DisplayName("GIVEN_entry_written_WHEN_accessed_THEN_it_is_returned")
+    @DisplayName("GIVEN entry written WHEN accessed THEN it is returned")
     @Test
     fun writingEntryKeepsTheData() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
@@ -75,7 +75,7 @@ class WritingIntegrationTest {
         Assertions.assertEquals(expectedEntry, foundInGroup)
     }
 
-    @DisplayName("GIVEN_group_written_WHEN_accessed_THEN_it_is_returned")
+    @DisplayName("GIVEN group written WHEN accessed THEN it is returned")
     @Test
     fun writingGroupKeepsTheData() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
@@ -102,7 +102,7 @@ class WritingIntegrationTest {
         Assertions.assertEquals(expectedSubGroup, foundSubGroupInGroup)
     }
 
-    @DisplayName("GIVEN_entry_added_to_group_WHEN_accessed_THEN_it_is_returned")
+    @DisplayName("GIVEN entry added to group WHEN accessed THEN it is returned")
     @Test
     fun writingEntryIntoGroupKeepsTheData() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
@@ -194,7 +194,7 @@ class WritingIntegrationTest {
         Assertions.assertEquals(null, expected.cause)
     }
 
-    @DisplayName("GIVEN_multiple_groups_and_entries_written_WHEN_accessed_THEN_it_is_returned_with_correct_counts")
+    @DisplayName("GIVEN multiple groups and entries written WHEN accessed THEN it is returned with correct counts")
     @Test
     fun writingMultipleGroupsAndEntries() = runBlocking {
         testDispatcherHolder.single.resumeDispatcher()
