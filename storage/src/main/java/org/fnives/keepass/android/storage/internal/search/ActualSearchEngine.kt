@@ -1,5 +1,6 @@
 package org.fnives.keepass.android.storage.internal.search
 
+import org.fnives.keepass.android.storage.internal.IconConverter
 import org.fnives.keepass.android.storage.internal.database.DatabaseHolder
 import org.fnives.keepass.android.storage.internal.database.getDomById
 import org.fnives.keepass.android.storage.internal.group.GroupConverter
@@ -11,7 +12,7 @@ import org.linguafranca.pwdb.Entry as DBEntry
 
 internal class ActualSearchEngine(
     private val databaseHolder: DatabaseHolder,
-    private val groupConverter: GroupConverter
+    private val groupConverter: GroupConverter = GroupConverter(IconConverter(databaseHolder))
 ) : SearchEngine {
 
     private val database get() = databaseHolder.database
